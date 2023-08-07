@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=wer08
+      - POSTGRES_PASSWORD=Password
+  frontend:
+    build: ./frontend
+    ports: 
+      - "4200:4200"
+    volumes:
+      - ./frontend:/frontend
+  backend:
+    build: ./backend/backend
+    ports:
+      - "8090:8090"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=wer08
+      - SPRING_DATASOURCE_PASSWORD=Password
+
