@@ -21,7 +21,7 @@ public class BackendApplication {
 
 
 	@Bean
-	CommandLineRunner run(MovieRepo movieRepo, ClientRepo clientRepo){
+	CommandLineRunner run( ClientRepo clientRepo){
 		return args -> {
 			Client client = new Client(null,"wer08","wojtek@mail.pl");
 			clientRepo.save(client);

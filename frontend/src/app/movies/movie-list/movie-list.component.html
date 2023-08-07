@@ -1,0 +1,10 @@
+<h2>Movies List</h2>
+<div *ngIf="movies$ | async as movies">
+    <span>{{movies.page}}</span>
+    <ul>
+        <li *ngFor="let movie of movies.results">
+          {{ movie.page }}
+        </li>
+      </ul>
+</div>
+

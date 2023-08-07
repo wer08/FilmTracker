@@ -8,11 +8,12 @@ services:
       - POSTGRES_USER=wer08
       - POSTGRES_PASSWORD=Password
   frontend:
-    build: ./frontend
-    ports: 
-      - "4200:4200"
-    volumes:
-      - ./frontend:/frontend
+    build:
+      context: ./frontend  # Use the current directory to build the Angular app container
+      dockerfile: Dockerfile  # Specify the Dockerfile name
+    ports:
+      - "4200:80"  # Map port 8080 on the host to port 80 on the container
+    restart: always  # Automatically restart the container if it stops
   backend:
     build: ./backend/backend
     ports:
@@ -23,4 +24,5 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
       - SPRING_DATASOURCE_USERNAME=wer08
       - SPRING_DATASOURCE_PASSWORD=Password
+
 
