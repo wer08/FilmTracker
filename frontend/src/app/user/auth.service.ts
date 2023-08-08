@@ -11,6 +11,7 @@ export class AuthService {
   private userKey = 'user';
 
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  
 
   constructor(private http: HttpClient) {
     this.isLoggedInSubject.next(this.isLoggedIn());

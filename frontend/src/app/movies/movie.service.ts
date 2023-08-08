@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { AuthService, User } from '../user/auth.service';
+import { switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private readonly authService: AuthService) { }
 
   getMovies() {
     const options = {
@@ -30,24 +32,40 @@ export class MovieService {
     return this.http.get<Response>(`${environment.publicApiUrl}${url}&limit=20`, options);
   }
 
-  addMoviesToWatched(movie: Movie) {
+  addMoviesToWatched(movieId: string) {
     const id = JSON.parse(localStorage.getItem('user')!).id
     const body = 
       {
-        movie: JSON.stringify(movie)
+        id: movieId
       }
 
-    return this.http.post<Movie>(`${environment.myApiUrl}/user/add-to-watched/${id}`,body)
+    return this.http.post<Movie>(`${environment.myApiUrl}/user/add-to-watched/${id}`, body)
+    .pipe(
+      switchMap(() => {
+        return this.authService.loadUserInfo();
+      }),
+      tap((updatedUser) => {
+        this.authService.saveUser(JSON.stringify(updatedUser));
+      })
+    );
   }
 
-  addMoviesToWatch(movie: Movie) {
-    const id = JSON.parse(localStorage.getItem('user')!).id
+  addMoviesToWatch(movieId: string) {
+    const user = JSON.parse(localStorage.getItem('user')!);
     const body = 
       {
-        movie: JSON.stringify(movie)
-      }
-
-    return this.http.post<Movie>(`${environment.myApiUrl}/user/add-to-watch/${id}`,body)
+        id: movieId
+      };
+  
+    return this.http.post<Movie>(`${environment.myApiUrl}/user/add-to-watch/${user.id}`, body)
+      .pipe(
+        switchMap(() => {
+          return this.authService.loadUserInfo();
+        }),
+        tap((updatedUser) => {
+          this.authService.saveUser(JSON.stringify(updatedUser));
+        })
+      );
   }
 }
 
@@ -57,6 +75,7 @@ export interface Response{
   next: string
 }
 export interface Movie{
+  id: string
   primaryImage: { url: string}
   titleText: {text: string}
   releaseYear: {year: number}

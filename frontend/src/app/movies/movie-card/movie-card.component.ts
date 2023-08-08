@@ -12,9 +12,9 @@ export class MovieCardComponent {
   movie$: Observable<Movie> | null = null
   constructor(private readonly service: MovieService) { }
   addToWatchList() {
-    this.movie$ = this.service.addMoviesToWatch(this.movie)
+    this.movie$ = this.service.addMoviesToWatch(this.movie.id)
   }
   addToWatchedList() {
-    this.movie$ = this.service.addMoviesToWatched(this.movie)
+    this.movie$ = this.service.addMoviesToWatched(this.movie.id)
   }
 }
