@@ -13,16 +13,20 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Movie {
+public class WatchList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
-    private String picture;
+    @Enumerated(EnumType.STRING)
+    private WatchListType type;
 
-    @ManyToMany(mappedBy = "movies")
-    private List<WatchList> watchlists = new ArrayList<>();
+    @OneToOne
+    private Client client;
 
+    @ManyToMany
+    private List<Movie> movies = new ArrayList<>();
 }
+
+

@@ -36,12 +36,11 @@ public class Client implements UserDetails
     private String lastName;
     private String password;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "client", cascade = ALL)
-    private List<Movie> moviesWatched;
-    @JsonIgnore
-    @OneToMany(mappedBy = "client", cascade = ALL)
-    private List<Movie> moviesToWatch;
+    @OneToOne(mappedBy = "client")
+    private WatchList toWatch;
+
+    @OneToOne(mappedBy = "client")
+    private WatchList watched;
     public Client(Long id, String username, String email)
     {
         this.id = id;
