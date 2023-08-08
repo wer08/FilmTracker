@@ -19,6 +19,12 @@ RUN npm run build --prod
 # Use a smaller, lightweight base image for the production build
 FROM nginx:stable-alpine
 
+# Remove the default NGINX configuration file
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copy your custom NGINX configuration file to the container
+COPY nginx.conf /etc/nginx/conf.d/
+
 # Copy the built app from the previous stage to the NGINX web server directory
 COPY --from=builder /app/dist/frontend /usr/share/nginx/html
 

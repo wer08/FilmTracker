@@ -1,10 +1,8 @@
-<h2>Movies List</h2>
-<div *ngIf="movies$ | async as movies">
-    <span>{{movies.page}}</span>
-    <ul>
-        <li *ngFor="let movie of movies.results">
-          {{ movie.page }}
-        </li>
-      </ul>
+
+<div *ngIf="movies$ | async as movies" class="movie-card-list">
+  <app-movie-card *ngFor="let movie of movies.results" [movie]="movie" />
+
 </div>
+
+<button *ngIf="(nextPageUrl$ | async) as nextPageUrl" (click)="fetchNextPage(nextPageUrl)">Next</button>
 

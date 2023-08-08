@@ -1,0 +1,22 @@
+<mat-toolbar color="accent" class="navbar">
+    <div class="navbar-icons">
+      <div class="navbarIcon navbar-left" routerLink="/">
+            <span>Film Browser</span>
+            <mat-icon>home</mat-icon>
+      </div>
+
+      <div *ngIf="!(isLoggedIn$ | async); else loggedInNav" class="right">
+        <span routerLink="/login">Login</span>
+        <span routerLink='/register'>Register</span>
+      </div>
+  
+      <ng-template #loggedInNav class="right">
+        <span routerLink="/watch-list">Watch List</span>
+        <span routerLink="/watched-list">Watched List</span>
+        <span (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+        </span>
+      </ng-template>
+
+    </div>
+</mat-toolbar>

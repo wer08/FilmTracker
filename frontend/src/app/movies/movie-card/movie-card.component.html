@@ -1,0 +1,20 @@
+<mat-card class="movie-card">
+    <span *ngIf="movie$ | async"></span>
+    <mat-card-header>
+        <div *ngIf="movie.primaryImage">
+            <img mat-card-image [src]="movie.primaryImage.url" alt="{{ movie.titleText.text }}" width="100px" height="100px">
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-card-title class="title">{{ movie.titleText.text }}</mat-card-title>
+      <p>{{ movie.releaseYear.year | date}}</p>
+    </mat-card-content>
+    <mat-card-actions class="action">
+        <button mat-mini-fab color="primary" (click)="addToWatchList()" matTooltip="Add to watch list">
+            <mat-icon>add_circle</mat-icon>
+        </button>
+        <button mat-mini-fab color="primary" (click)="addToWatchedList()" matTooltip="Add to watched list" style="margin-left: 15px;">
+            <mat-icon>check_circle</mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>

@@ -1,27 +1,63 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
-  private apiURL = 'https://moviesdatabase.p.rapidapi.com/titles';
 
   constructor(private http: HttpClient) { }
 
   getMovies() {
     const options = {
       headers: {
-        'X-RapidAPI-Key': '191c82b600msh5f4e0ecae3616b3p14d0e6jsnabbf42c40f43',
-        'X-RapidAPI-Host': 'moviesdatabase.p.rapidapi.com'
+        'X-RapidAPI-Key': environment.key,
+        'X-RapidAPI-Host': environment.host
       }
     };
 
-    return this.http.get<Response>(this.apiURL, options);
+    return this.http.get<Response>(`${environment.publicApiUrl}/titles?limit=20`, options);
+  }
+  getMoviesNextPage(url: string) {
+    const options = {
+      headers: {
+        'X-RapidAPI-Key': environment.key,
+        'X-RapidAPI-Host': environment.host
+      }
+    };
+
+    return this.http.get<Response>(`${environment.publicApiUrl}${url}&limit=20`, options);
+  }
+
+  addMoviesToWatched(movie: Movie) {
+    const id = JSON.parse(localStorage.getItem('user')!).id
+    const body = 
+      {
+        movie: JSON.stringify(movie)
+      }
+
+    return this.http.post<Movie>(`${environment.myApiUrl}/user/add-to-watched/${id}`,body)
+  }
+
+  addMoviesToWatch(movie: Movie) {
+    const id = JSON.parse(localStorage.getItem('user')!).id
+    const body = 
+      {
+        movie: JSON.stringify(movie)
+      }
+
+    return this.http.post<Movie>(`${environment.myApiUrl}/user/add-to-watch/${id}`,body)
   }
 }
 
-interface Response{
+export interface Response{
   page: number,
-  results: any[]
+  results: Movie[],
+  next: string
+}
+export interface Movie{
+  primaryImage: { url: string}
+  titleText: {text: string}
+  releaseYear: {year: number}
 }
