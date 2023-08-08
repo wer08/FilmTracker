@@ -53,7 +53,7 @@ public class WatchListServiceImpl implements WatchListService {
 
     @Override
     public WatchList removeFromWatched(Client client, Movie movie) {
-        WatchList wachedList = getToWatchByClient(client);
+        WatchList wachedList = getWatchedByClient(client);
         wachedList.getMovies().remove(movie);
         return repository.save(wachedList);
     }
