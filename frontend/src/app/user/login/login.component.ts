@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService, LoginData } from '../auth.service';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +10,22 @@ import { Observable, map, tap } from 'rxjs';
 })
 export class LoginComponent {
   loginData: LoginData = { username: '', password: '' };
-  token$: Observable<string> | null =null;
   user$: Observable<string> | null = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private readonly router: Router) {}
 
   login() {
     this.user$ = this.authService.login(this.loginData).pipe(
-      map(response => this.authService.extractUser(response)),
-      tap(user => console.log(user)),
-      tap(user => this.authService.saveUser(user)),
-    )
-    this.token$ = this.authService.login(this.loginData).pipe(
-      map(response => this.authService.extractToken(response)),
-      tap(token => this.authService.saveToken(token))
-    )
+      tap(response => {
+        const user = this.authService.extractUser(response);
+        const token = this.authService.extractToken(response);
+
+        this.authService.saveUser(user);
+        this.authService.saveToken(token);
+
+        // Navigate to the desired route after the login process
+        this.router.navigate(['/']); // Navigation on success
+      })
+    );
   }
 }

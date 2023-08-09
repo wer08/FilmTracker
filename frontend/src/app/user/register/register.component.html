@@ -1,5 +1,5 @@
 <form (ngSubmit)="register()" class="register-form">
-    <span *ngIf="token$ | async"></span>
+  <span *ngIf="token$ | async"></span>
     <div class="form-group">
       <mat-form-field>
         <input matInput type="text" placeholder="First Name" [(ngModel)]="registerData.firstName" name="firstName" required>

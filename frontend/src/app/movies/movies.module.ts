@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { WatchedComponent } from './watched/watched.component';
 import { ToWatchComponent } from './to-watch/to-watch.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { ToWatchComponent } from './to-watch/to-watch.component';
     MovieListComponent,
     MovieCardComponent,
     WatchedComponent,
-    ToWatchComponent
+    ToWatchComponent,
   ],
   imports: [
     CommonModule,
@@ -25,6 +26,7 @@ import { ToWatchComponent } from './to-watch/to-watch.component';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatSnackBarModule
   ],
   exports: [
     MovieListComponent,

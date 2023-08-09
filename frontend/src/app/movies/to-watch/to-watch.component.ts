@@ -10,22 +10,35 @@ import { MovieWithWatchInfo } from '../movie-list/movie-list.component';
   templateUrl: './to-watch.component.html',
   styleUrls: ['./to-watch.component.css']
 })
-export class ToWatchComponent implements OnInit{
+export class ToWatchComponent implements OnInit {
   movies$: Observable<MovieWithWatchInfo[]> | undefined;
-  constructor(private readonly userService: UserService, private readonly route: ActivatedRoute, private readonly movieService: MovieService) { }
+
+  constructor(
+    private readonly userService: UserService,
+    private readonly route: ActivatedRoute,
+    private readonly movieService: MovieService
+  ) {}
+
   ngOnInit(): void {
-    this.movies$ = this.route.params.pipe(
-      switchMap(params => this.userService.getMoviesToWatch()),
-      map(response => response.data.toWatchList),
-      switchMap(movieIds => this.movieService.getMovieDetails(movieIds).pipe(
-        map(movies =>
-          movies.map(movie => ({
-            ...movie,
-            isInToWatch: true,
-            isInWatched: false
-          })))
-      ))
-    )
+    this.fetchMovies();
   }
-  
+
+  private fetchMovies() {
+    this.movies$ = this.userService.getMoviesToWatch().pipe(
+      map(response => response.data.toWatchList),
+      switchMap(movieIds =>
+        this.movieService.getMovieDetails(movieIds).pipe(
+          map(movies =>
+            movies.map(movie => ({
+              ...movie,
+              isInToWatch: true,
+              isInWatched: false
+            }))
+          )
+        )
+      )
+    );
+  }
+
+
 }

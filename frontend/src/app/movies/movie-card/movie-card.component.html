@@ -1,4 +1,4 @@
-<mat-card class="movie-card">
+<mat-card class="movie-card" *ngIf="present">
     <span *ngIf="movie$ | async"></span>
     <mat-card-header>
         <div *ngIf="movie.primaryImage">
@@ -6,15 +6,21 @@
         </div>
     </mat-card-header>
     <mat-card-content>
-        <mat-card-title class="title"></mat-card-title>
-      <p>{{ movie.releaseYear.year | date}}{{movie.isInToWatch}}</p>
+        <mat-card-title class="title">{{movie.titleText.text}}</mat-card-title>
+      <p>{{ movie.releaseYear.year}}</p>
     </mat-card-content>
-    <mat-card-actions class="action">
-        <button mat-mini-fab color="primary" (click)="addToWatchList()" matTooltip="Add to watch list" [disabled]="movie.isInToWatch">
-            <mat-icon>add_circle</mat-icon>
-        </button>
-        <button mat-mini-fab color="primary" (click)="addToWatchedList()" matTooltip="Add to watched list" [disabled]="movie.isInWatched" style="margin-left: 15px;">
-            <mat-icon>check_circle</mat-icon>
+    <mat-card-actions class="action" *ngIf="isLoggedIn$ | async">
+        <ng-container *ngIf="!inList">
+            <button mat-mini-fab color="primary" (click)="addToWatchList()" matTooltip="Add to watch list" [disabled]="movie.isInToWatch">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary" (click)="addToWatchedList()" matTooltip="Add to watched list" [disabled]="movie.isInWatched" style="margin-left: 15px;">
+                <mat-icon>check_circle</mat-icon>
+            </button>
+        </ng-container>
+
+        <button *ngIf="inList" mat-mini-fab color="warn" (click)="deleteFromList()" matTooltip="delete from watch list" style="margin-left: 15px;">
+            <mat-icon>delete</mat-icon>
         </button>
     </mat-card-actions>
 </mat-card>

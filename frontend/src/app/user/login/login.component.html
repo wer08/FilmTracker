@@ -1,6 +1,5 @@
 <form (ngSubmit)="login()" class="login-form">
   <span *ngIf="user$ | async"></span>
-  <span *ngIf="token$ | async"></span>
   <div class="form-group">
     <mat-form-field>
       <input matInput type="text" placeholder="Username" [(ngModel)]="loginData.username" name="username" required="">

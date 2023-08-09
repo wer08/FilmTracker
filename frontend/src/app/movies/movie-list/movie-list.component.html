@@ -1,8 +1,8 @@
 
 <div *ngIf="movies$ | async as movies" class="movie-card-list">
-  <app-movie-card *ngFor="let movie of movies.results" [movie]="movie" />
+  <app-movie-card *ngFor="let movie of movies.results" [movie]="movie" [inList]="false" [watched]="false"/>
 
 </div>
 
-<button *ngIf="(nextPageUrl$ | async) as nextPageUrl" (click)="fetchNextPage(nextPageUrl)">Next</button>
+<button mat-raised-button *ngIf="(nextPageUrl$ | async) as nextPageUrl" (click)="fetchNextPage(nextPageUrl)" style="margin-left: 15px;">Next</button>
 

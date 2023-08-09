@@ -9,6 +9,8 @@ import { Observable, forkJoin, map, switchMap, tap } from 'rxjs';
 })
 export class MovieService {
 
+  
+
   constructor(private http: HttpClient, private readonly authService: AuthService) { }
 
   getMovies() {
@@ -19,7 +21,7 @@ export class MovieService {
       }
     };
 
-    return this.http.get<Response>(`${environment.publicApiUrl}/titles?limit=20`, options);
+    return this.http.get<Response>(`${environment.publicApiUrl}/titles?limit=20&startYear=1970&endYear=2023`, options);
   }
   getMoviesNextPage(url: string) {
     const options = {
@@ -70,6 +72,33 @@ export class MovieService {
       };
   
     return this.http.post<Movie>(`${environment.myApiUrl}/user/add-to-watch/${user.id}`, body)
+      .pipe(
+        switchMap(() => {
+          return this.authService.loadUserInfo();
+        }),
+        tap((updatedUser) => {
+          this.authService.saveUser(this.authService.extractUser(updatedUser));
+        })
+      );
+  }
+
+  deleteMovieFromToWatchList(movieId: string){
+    const user = JSON.parse(localStorage.getItem('user')!);
+  
+    return this.http.delete<Movie>(`${environment.myApiUrl}/user/remove-from-to-watch/${movieId}/${user.id}`)
+      .pipe(
+        switchMap(() => {
+          return this.authService.loadUserInfo();
+        }),
+        tap((updatedUser) => {
+          this.authService.saveUser(this.authService.extractUser(updatedUser));
+        })
+      );
+  }
+  deleteMovieWatchedList(movieId: string){
+    const user = JSON.parse(localStorage.getItem('user')!);
+  
+    return this.http.delete<Movie>(`${environment.myApiUrl}/user/remove-from-watched/${movieId}/${user.id}`)
       .pipe(
         switchMap(() => {
           return this.authService.loadUserInfo();
