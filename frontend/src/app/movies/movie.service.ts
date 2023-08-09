@@ -57,7 +57,7 @@ export class MovieService {
         return this.authService.loadUserInfo();
       }),
       tap((updatedUser) => {
-        this.authService.saveUser(JSON.stringify(updatedUser));
+        this.authService.saveUser(this.authService.extractUser(updatedUser));
       })
     );
   }
@@ -75,10 +75,22 @@ export class MovieService {
           return this.authService.loadUserInfo();
         }),
         tap((updatedUser) => {
-          this.authService.saveUser(JSON.stringify(updatedUser));
+          this.authService.saveUser(this.authService.extractUser(updatedUser));
         })
       );
   }
+
+  isMovieInWatched(client: User, movie: Movie): boolean {
+    return client.watched.some(m => m === movie.id);
+
+  }
+
+  isMovieInToWatch(client: User, movie: Movie): boolean {
+
+    return client.toWatch.some(m => m === movie.id);
+  }
+
+  
 
   getMovieDetails(movieIds: string[]): Observable<Movie[]> {
     const observables: Observable<Movie>[] = [];

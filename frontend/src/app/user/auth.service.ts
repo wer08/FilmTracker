@@ -103,7 +103,7 @@ export class AuthService {
   loadUserInfo(): Observable<any> {
     const url = `${environment.myApiUrl}/auth/loadUser`;
     const token = this.getToken();
-    const headers = { Authorization: `Bearer ${token}` };
+    const headers = { 'Jwt-Token': `${token}` };
     return this.http.get(url, { headers });
   }
 
