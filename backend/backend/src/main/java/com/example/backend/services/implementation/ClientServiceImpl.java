@@ -1,9 +1,7 @@
 package com.example.backend.services.implementation;
 
 import com.example.backend.configuration.JwtService;
-import com.example.backend.model.AuthenticationRequest;
-import com.example.backend.model.Client;
-import com.example.backend.model.RegisterRequest;
+import com.example.backend.model.*;
 import com.example.backend.repo.ClientRepo;
 import com.example.backend.services.ClientService;
 import jakarta.transaction.Transactional;
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.example.backend.model.Role.USER;
+
 
 @RequiredArgsConstructor
 @Service
@@ -48,6 +47,7 @@ public class ClientServiceImpl implements ClientService
     @Override
     public String register(RegisterRequest request)
     {
+
         Client user = Client.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -56,6 +56,7 @@ public class ClientServiceImpl implements ClientService
                 .role(USER)
                 .username(request.getUsername())
                 .build();
+
         clientRepo.save(user);
         return jwtService.generateToken(user);
     }

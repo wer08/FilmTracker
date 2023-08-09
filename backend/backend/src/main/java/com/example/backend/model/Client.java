@@ -1,6 +1,5 @@
 package com.example.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,10 +9,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.AUTO;
 
@@ -35,12 +34,11 @@ public class Client implements UserDetails
     private String firstName;
     private String lastName;
     private String password;
+    @Builder.Default
+    private List<String> toWatch = new ArrayList<>();
 
-    @OneToOne(mappedBy = "client")
-    private WatchList toWatch;
-
-    @OneToOne(mappedBy = "client")
-    private WatchList watched;
+    @Builder.Default
+    private List<String> watched = new ArrayList<>();
     public Client(Long id, String username, String email)
     {
         this.id = id;
