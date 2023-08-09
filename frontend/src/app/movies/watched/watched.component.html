@@ -1,1 +1,5 @@
-<p>watched works!</p>
+<div *ngIf="movies$ | async as movies" class="movie-card-list">
+    <app-movie-card *ngFor="let movie of movies" [movie]="movie" />
+  
+</div>
+
