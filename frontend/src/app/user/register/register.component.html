@@ -1,4 +1,4 @@
-<form (ngSubmit)="register()" class="register-form">
+<form (ngSubmit)="register()" class="register-form" [formGroup]="registerForm">
   <span *ngIf="token$ | async"></span>
     <div class="form-group">
       <mat-form-field>
@@ -29,7 +29,7 @@
       </mat-form-field>
     </div>
 
-    <button mat-raised-button color="primary" type="submit">Register</button>
+    <button mat-raised-button color="primary" type="submit" >Register</button>
 
 </form>
   
