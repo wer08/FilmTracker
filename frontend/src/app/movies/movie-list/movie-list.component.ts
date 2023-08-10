@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 import { Movie, MovieService, Response } from '../movie.service';
 import { Observable, combineLatest, map, of, switchMap } from 'rxjs';
 import { AuthService, User } from 'src/app/user/auth.service';
@@ -12,7 +12,8 @@ export class MovieListComponent{
 
 
   constructor(private movieService: MovieService, private readonly authService: AuthService) { }
-  searchQuery: string = '';
+  searchQueryTitle: string = '';
+  searchQueryKeyword: string = '';
 
   movies$ = combineLatest([
     this.movieService.getMovies(),
@@ -35,8 +36,23 @@ export class MovieListComponent{
     }));
   }
 
-  performSearch() {
-    const url = this.searchQuery.length > 0 ? `/titles/search/keyword/${this.searchQuery}` : `/titles?limit=20&startYear=1970&endYear=2023`
+  performSearchByKeyword() {
+    const url = this.searchQueryKeyword.trim().length > 0 ? `/titles/search/keyword/${this.searchQueryKeyword}` : `/titles?limit=20&startYear=1970&endYear=2023`
+    this.movies$ = this.movieService.getMoviesNextPage(url).pipe(
+      switchMap(response => {
+        return this.authService.loadUserInfo().pipe(
+          map(client => {
+            const clientObject = JSON.parse(this.authService.extractUser(client))
+            const modifiedResults = this.mapMoviesWithWatchInfo(response.results, clientObject);
+            return { ...response, results: modifiedResults };
+          })
+        );
+      })
+    );
+  }
+
+  performSearchByTitle() {
+    const url = this.searchQueryTitle.trim().length > 0 ? `/titles/search/title/${this.searchQueryTitle}` : `/titles?limit=20&startYear=1970&endYear=2023`
     this.movies$ = this.movieService.getMoviesNextPage(url).pipe(
       switchMap(response => {
         return this.authService.loadUserInfo().pipe(

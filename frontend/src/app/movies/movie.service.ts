@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { AuthService, User } from '../user/auth.service';
 import { Observable, forkJoin, map, switchMap, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class MovieService {
         'X-RapidAPI-Host': environment.host
       }
     };
-
+    console.log(url)
     return this.http.get<Response>(`${environment.publicApiUrl}${url}`, options);
   }
 

@@ -1,8 +1,18 @@
 <div class="centered-search">
-  <mat-form-field>
-    <mat-icon matPrefix class="search" (click)="performSearch()">search</mat-icon>
-    <input matInput placeholder="Search By Keyword" [(ngModel)]="searchQuery">
-  </mat-form-field>
+  <div>
+    <mat-form-field>
+      <mat-icon matPrefix class="search" (click)="performSearchByKeyword()">search</mat-icon>
+      <input matInput placeholder="Search By Keyword" [(ngModel)]="searchQueryKeyword">
+    </mat-form-field>
+  </div>
+
+  <div style="margin-left: 15px;">
+    <mat-form-field>
+      <mat-icon matPrefix class="search" (click)="performSearchByTitle()">search</mat-icon>
+      <input matInput placeholder="Search By Title" [(ngModel)]="searchQueryTitle">
+    </mat-form-field>
+  </div>
+
 </div>
 <div *ngIf="movies$ | async as movies" class="movie-card-list">
   <app-movie-card *ngFor="let movie of movies.results" [movie]="movie" [inList]="false" [watched]="false"/>
