@@ -3,3 +3,12 @@
     flex-wrap: wrap;
     justify-content: center;
   }
+  .centered-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 15vh; /* Adjust the height as needed */
+  }
+  .search{
+    cursor: pointer;
+  }

@@ -10,7 +10,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { WatchedComponent } from './watched/watched.component';
 import { ToWatchComponent } from './to-watch/to-watch.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatInputModule,
+    MatToolbarModule,
+    FormsModule
   ],
   exports: [
     MovieListComponent,

@@ -12,7 +12,7 @@ export class MovieListComponent{
 
 
   constructor(private movieService: MovieService, private readonly authService: AuthService) { }
-
+  searchQuery: string = '';
 
   movies$ = combineLatest([
     this.movieService.getMovies(),
@@ -20,7 +20,6 @@ export class MovieListComponent{
   ]).pipe(
     switchMap(([response, client]) => {
       const clientObject = JSON.parse(this.authService.extractUser(client))
-      console.log(clientObject)
       const modifiedResults = this.mapMoviesWithWatchInfo(response.results, clientObject);
       return of({ ...response, results: modifiedResults });
     })
@@ -36,6 +35,20 @@ export class MovieListComponent{
     }));
   }
 
+  performSearch() {
+    const url = this.searchQuery.length > 0 ? `/titles/search/keyword/${this.searchQuery}` : `/titles?limit=20&startYear=1970&endYear=2023`
+    this.movies$ = this.movieService.getMoviesNextPage(url).pipe(
+      switchMap(response => {
+        return this.authService.loadUserInfo().pipe(
+          map(client => {
+            const clientObject = JSON.parse(this.authService.extractUser(client))
+            const modifiedResults = this.mapMoviesWithWatchInfo(response.results, clientObject);
+            return { ...response, results: modifiedResults };
+          })
+        );
+      })
+    );
+  }
 
   fetchNextPage(nextPageUrl: string): void {
     this.movies$ = this.movieService.getMoviesNextPage(nextPageUrl).pipe(

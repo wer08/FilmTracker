@@ -32,6 +32,3 @@
   - I want to remove a movie from the watched list of a specific client.
   - So that I can help the client update their watched movie record.
 
-- **As a user:**
-  - I want to update the details of a client's profile.
-  - So that I can keep their profile information accurate and up-to-date.

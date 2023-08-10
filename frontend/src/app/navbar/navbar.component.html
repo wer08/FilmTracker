@@ -6,14 +6,14 @@
       </div>
 
       <div *ngIf="!(isLoggedIn$ | async); else loggedInNav" class="right">
-        <span routerLink="/login">Login</span>
-        <span routerLink='/register'>Register</span>
+        <span routerLink="/login" class="toBeClicked">Login</span>
+        <span routerLink='/register' class="toBeClicked">Register</span>
       </div>
   
       <ng-template #loggedInNav class="right">
-        <span routerLink="/watch-list">Watch List</span>
-        <span routerLink="/watched-list">Watched List</span>
-        <span (click)="logout()">
+        <span routerLink="/watch-list" class="toBeClicked" matTooltip="Yours list of films you're planning to watch">Watch List<mat-icon>schedule</mat-icon></span>
+        <span routerLink="/watched-list" class="toBeClicked" matTooltip="Movies you have already watched">Watched<mat-icon>done</mat-icon></span>
+        <span (click)="logout()" class="toBeClicked">
           <mat-icon>exit_to_app</mat-icon>
         </span>
       </ng-template>
